@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.clientcrud.dto.ClientDTO;
+import com.clientcrud.dto.ClientInsertDTO;
 import com.clientcrud.services.ClientService;
 
 @RestController
@@ -44,9 +45,9 @@ public class ClientResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<ClientDTO> insert (@RequestBody ClientDTO dto){
-		dto = clientService.insert(dto);
-		return ResponseEntity.ok().body(dto);
+	public ResponseEntity<ClientDTO> insert (@RequestBody ClientInsertDTO dto){
+		ClientDTO clientDTO = clientService.insert(dto);
+		return ResponseEntity.ok().body(clientDTO);
 	}
 	
 	@PutMapping(value = "/{id}")

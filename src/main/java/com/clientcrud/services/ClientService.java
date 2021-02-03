@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.clientcrud.dto.ClientDTO;
+import com.clientcrud.dto.ClientInsertDTO;
 import com.clientcrud.entities.Client;
 import com.clientcrud.repositories.ClientRepository;
 import com.clientcrud.services.exceptions.DatabaseException;
@@ -20,6 +22,9 @@ public class ClientService {
 
 	@Autowired
 	private ClientRepository clientRepository;
+
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 	@Transactional(readOnly = true)
 	public Page<ClientDTO> findAllPaged(PageRequest pageRequest) {
@@ -40,9 +45,10 @@ public class ClientService {
 	}
 
 	@Transactional
-	public ClientDTO insert(ClientDTO dto) {
+	public ClientDTO insert(ClientInsertDTO dto) {
 		Client client = new Client();
 		copyDtoToEntity(dto, client);
+		client.setPassword(passwordEncoder.encode(dto.getPassword()));
 		client = clientRepository.save(client);
 		return new ClientDTO(client);
 	}
@@ -74,6 +80,8 @@ public class ClientService {
 
 	private void copyDtoToEntity(ClientDTO dto, Client client) {
 		client.setName(dto.getName());
+		client.setEmail(dto.getEmail());
+		client.setBirthDate(dto.getBirthDate());
 		client.setIncome(dto.getIncome());
 		client.setCpf(dto.getCpf());
 		client.setChildren(dto.getChildren());
