@@ -2,10 +2,14 @@ package com.clientcrud.services;
 
 import java.util.Optional;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +22,9 @@ import com.clientcrud.services.exceptions.DatabaseException;
 import com.clientcrud.services.exceptions.ResourceNotFoundException;
 
 @Service
-public class ClientService {
+public class ClientService implements UserDetailsService{
+	
+	private static Logger logger = org.slf4j.LoggerFactory.getLogger(ClientService.class);
 
 	@Autowired
 	private ClientRepository clientRepository;
@@ -86,6 +92,21 @@ public class ClientService {
 		client.setCpf(dto.getCpf());
 		client.setChildren(dto.getChildren());
 		client.setBirthDate(dto.getBirthDate());
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Client client = clientRepository.findByEmail(username);
+		
+		if(client == null) {
+			logger.error("User Not found: " + username);
+			throw new UsernameNotFoundException("User Not Found: " + username);
+		}
+		
+		logger.info("User Found: " + username);
+		
+		
+		return client;
 	}
 
 }
