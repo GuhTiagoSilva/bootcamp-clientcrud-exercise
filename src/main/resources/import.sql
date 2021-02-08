@@ -7,3 +7,10 @@ INSERT INTO Tb_Client (BIRTH_DATE, CHILDREN, CPF, INCOME, NAME, EMAIL, PASSWORD)
 INSERT INTO Tb_Client (BIRTH_DATE, CHILDREN, CPF, INCOME, NAME, EMAIL, PASSWORD) VALUES (NOW(), 2, '321.963.213-5', 8000.00, 'Maria da Silva', 'maria.silva@gmail.com','$2y$12$sSqU32cf7PDmQIlnC6qGVexk1wQH.4Pl0pugy4igCSpP4GjIA3CkS');
 INSERT INTO Tb_Client (BIRTH_DATE, CHILDREN, CPF, INCOME, NAME, EMAIL, PASSWORD) VALUES (NOW(), 2, '421.126.233-6', 9000.00, 'Cláudio Xavier', 'claudio@gmail.com','$2y$12$sSqU32cf7PDmQIlnC6qGVexk1wQH.4Pl0pugy4igCSpP4GjIA3CkS');
 INSERT INTO Tb_Client (BIRTH_DATE, CHILDREN, CPF, INCOME, NAME, EMAIL, PASSWORD) VALUES (NOW(), 1, '521.356.787-7', 10000.00, 'Paulo Augusto', 'paulo.augusto@gmail.com','$2y$12$sSqU32cf7PDmQIlnC6qGVexk1wQH.4Pl0pugy4igCSpP4GjIA3CkS');
+
+INSERT INTO tb_role (name) VALUES ('ROLE_OPERATOR');
+INSERT INTO tb_role (name) VALUES ('ROLE_ADMIN');
+
+INSERT INTO tb_client_role (client_id, role_id) VALUES (1, 1);
+INSERT INTO tb_client_role (client_id, role_id) VALUES (2, 1);
+INSERT INTO tb_client_role (client_id, role_id) VALUES (2, 2);
